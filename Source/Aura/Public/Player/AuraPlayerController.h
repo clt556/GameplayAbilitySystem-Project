@@ -30,10 +30,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	TScriptInterface<IEnemyInterface> LastActor;
+	TScriptInterface<IEnemyInterface> ThisActor;
+	//Both are enemies. since enemy inherited the IEnemyInterface
+private:
 	void Move(const FInputActionValue& InputActionValue);//Binding Function
 
 	void CursorTrace();
 
-	TScriptInterface< IEnemyInterface> LastActor;
-	TScriptInterface< IEnemyInterface> ThisActor;
+	
 };

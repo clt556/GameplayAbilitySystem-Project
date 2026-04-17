@@ -13,7 +13,11 @@ public class Aura : ModuleRules
 		"EnhancedInput",
 		"GameplayAbilities", 
 		"GameplayTags",     
-		"GameplayTasks" });
+		"GameplayTasks",
+		"UMG",
+		"Slate",
+		"SlateCore"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

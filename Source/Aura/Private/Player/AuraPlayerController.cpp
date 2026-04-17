@@ -9,6 +9,7 @@
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+	//Server side update receive available
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
@@ -25,8 +26,8 @@ void AAuraPlayerController::BeginPlay()
 	check(AuraContext); //null check
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-	Subsystem->AddMappingContext(AuraContext, 0);
+	if(Subsystem)
+		Subsystem->AddMappingContext(AuraContext, 0);
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -41,12 +42,12 @@ void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent =
-		CastChecked<UEnhancedInputComponent>(InputComponent);
+	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
 }
 
+//�ڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡ�
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
@@ -62,6 +63,7 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
 }
+//�ڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡڡ�
 
 void AAuraPlayerController::CursorTrace()
 {
@@ -73,7 +75,15 @@ void AAuraPlayerController::CursorTrace()
 	ThisActor = CursorHit.GetActor(); // this frame, refrain this as new one of always
 	
 	//Always, 'ThisActor' > 'LastActor'
-
+	
+	/*Whole things are about mouseCursor act.when overlap an actor in the game world, let actor's interface call highlight function
+	
+		LastActor :: ThisActor  ->
+		null		 null		->	Do Nothing
+		null		 valid		->  Highlight ThisActor
+		valid		 null		->	unhighlight LastActor
+		valid		 valid		->  unhighlight LastActor and highlight ThisActor : if both are same, just highlight ThisActor or do nothing, since LastActor would be highlighted already.
+	*/
 	if (!LastActor)
 	{
 		if (ThisActor)
@@ -102,7 +112,8 @@ void AAuraPlayerController::CursorTrace()
 			}
 			else
 			{
-				//DoNothing
+				//DoNothing of ThisActor->HighlightActor();
+				ThisActor->HighlightActor();
 			}
 		}
 	}

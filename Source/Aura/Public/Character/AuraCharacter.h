@@ -18,7 +18,9 @@ public:
 	AAuraCharacter();
 	virtual void PossessedBy(AController* NewController) override; // AActor has it.
 	virtual void OnRep_PlayerState() override; // APawn has it.
-
+	/*
+		GAS setting up functions are called automatically, by Unreal Fremework
+	*/
 private:
 	void InitAbilityActorInfo();
 };

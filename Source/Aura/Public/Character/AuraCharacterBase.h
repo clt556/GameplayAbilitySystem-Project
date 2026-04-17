@@ -26,7 +26,7 @@ protected:
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
 	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent; //Enemy's ASC
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
